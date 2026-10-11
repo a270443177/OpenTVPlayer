@@ -55,13 +55,31 @@ jobs:
             echo "::warning::未配置签名 Secrets，本次构建产出【未签名】APK"
           fi
 
+      - name: 判定签名状态
+        id: sign
+        run: |
+          if [ -f keystore.properties ]; then
+            echo "signed=signed" >> $GITHUB_OUTPUT
+          else
+            echo "signed=unsigned" >> $GITHUB_OUTPUT
+          fi
+
       - name: 执行构建
         run: ./gradlew assembleDebug assembleRelease --stacktrace
+
+      - name: 校验签名
+        if: steps.sign.outputs.signed == 'signed'
+        run: |
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner | sort | tail -1)
+          for f in app/build/outputs/apk/release/*.apk; do
+            echo "--- $(basename "$f") ---"
+            "$APKSIGNER" verify --print-certs "$f" | head -3
+          done
 
       - name: 输出构建信息
         run: |
           {
-            echo "### 构建产物（多架构）"
+            echo "### 构建产物（多架构 · ${{ steps.sign.outputs.signed }}）"
             echo ""
             echo "| 文件 | 大小 |"
             echo "|---|---|"
@@ -80,11 +98,11 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
-      - name: 上传 Release APK（多架构，未签名）
+      - name: 上传 Release APK（多架构）
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: OpenTV-release-apks-unsigned
+          name: OpenTV-release-apks-${{ steps.sign.outputs.signed }}
           path: app/build/outputs/apk/release/*.apk
           if-no-files-found: warn
           retention-days: 30
