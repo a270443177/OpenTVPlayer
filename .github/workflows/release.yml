@@ -32,6 +32,9 @@ jobs:
       - name: 配置 Gradle 缓存
         uses: gradle/actions/setup-gradle@v4
 
+      - name: 赋予 gradlew 可执行权限
+        run: chmod +x ./gradlew
+
       - name: 构建 Release APK
         run: ./gradlew assembleRelease --stacktrace
 
