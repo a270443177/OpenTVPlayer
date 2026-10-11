@@ -35,6 +35,26 @@ jobs:
       - name: 赋予 gradlew 可执行权限
         run: chmod +x ./gradlew
 
+      - name: 恢复签名密钥库
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > opentv-release.jks
+            {
+              echo "storeFile=opentv-release.jks"
+              echo "storePassword=${KEYSTORE_PASSWORD}"
+              echo "keyAlias=${KEY_ALIAS}"
+              echo "keyPassword=${KEY_PASSWORD}"
+            } > keystore.properties
+            echo "::notice::签名密钥库已就绪，本次构建将产出【已签名】APK"
+          else
+            echo "::warning::未配置签名 Secrets，本次构建产出【未签名】APK"
+          fi
+
       - name: 执行构建
         run: ./gradlew assembleDebug assembleRelease --stacktrace
 

@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   release:
-    name: 构建并发布（多架构）
+    name: 构建并发布（多架构 + 签名）
     runs-on: ubuntu-latest
 
     steps:
@@ -35,6 +35,26 @@ jobs:
       - name: 赋予 gradlew 可执行权限
         run: chmod +x ./gradlew
 
+      - name: 恢复签名密钥库
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > opentv-release.jks
+            {
+              echo "storeFile=opentv-release.jks"
+              echo "storePassword=${KEYSTORE_PASSWORD}"
+              echo "keyAlias=${KEY_ALIAS}"
+              echo "keyPassword=${KEY_PASSWORD}"
+            } > keystore.properties
+            echo "::notice::签名密钥库已就绪，本次构建将产出【已签名】APK"
+          else
+            echo "::warning::未配置签名 Secrets，本次构建产出【未签名】APK"
+          fi
+
       - name: 构建 Release APK（按 ABI 拆分 + 通用包）
         run: ./gradlew assembleRelease --stacktrace
 
@@ -44,8 +64,17 @@ jobs:
           set -e
           SRC=app/build/outputs/apk/release
           VERSION=$(grep -oP 'versionName\s*=\s*"\K[^"]+' app/build.gradle.kts | head -1)
-          echo "版本: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "版本: $VERSION"
+
+          # 是否签名（依据 keystore.properties 是否存在）
+          if [ -f keystore.properties ]; then
+            SIGNED="signed"
+            echo "::notice::产物为已签名包"
+          else
+            SIGNED="unsigned"
+          fi
+          echo "signed=$SIGNED" >> $GITHUB_OUTPUT
 
           echo "=== 原始产物 ==="
           ls -lh "$SRC"
@@ -70,13 +99,22 @@ jobs:
           sha256sum *.apk > SHA256SUMS.txt
           echo "=== 待发布文件 ==="
           ls -lh
-          echo ""
           cat SHA256SUMS.txt
+
+      - name: 校验签名
+        if: steps.pkg.outputs.signed == 'signed'
+        run: |
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner | sort | tail -1)
+          echo "apksigner: $APKSIGNER"
+          for f in dist/*.apk; do
+            echo "--- $(basename "$f") ---"
+            "$APKSIGNER" verify --print-certs "$f" | head -3
+          done
 
       - name: 输出构建摘要
         run: |
           {
-            echo "## 构建产物（多架构）"
+            echo "## 构建产物（多架构 · ${{ steps.pkg.outputs.signed }}）"
             echo ""
             echo "| 文件 | 大小 |"
             echo "|---|---|"
@@ -92,7 +130,7 @@ jobs:
       - name: 上传构建产物（Actions artifact）
         uses: actions/upload-artifact@v4
         with:
-          name: OpenTV-release-apks
+          name: OpenTV-release-apks-${{ steps.pkg.outputs.signed }}
           path: dist/*.apk
           if-no-files-found: error
           retention-days: 30
@@ -109,8 +147,8 @@ jobs:
           body: |
             ## 按设备架构下载
 
-            > ℹ️ **当前版本未包含原生库（.so）**，各架构包与通用包内容一致，任选其一即可。
-            > 拆分框架已就位：后续版本引入原生库后，各架构包将自动只含对应架构的库，体积显著减小。
+            > ℹ️ 当前版本未包含原生库（.so），各架构包内容一致，任选其一即可。
+            > 拆分框架已就位：后续版本引入原生库后，各包将自动只含对应架构的库。
             > **不确定选哪个就下 `universal`**。
 
             | 文件名 | 适用设备 |
@@ -121,8 +159,7 @@ jobs:
             | `OpenTV-Player-${{ steps.pkg.outputs.version }}-x86.apk` | 老 x86 设备 / 模拟器 |
             | `OpenTV-Player-${{ steps.pkg.outputs.version }}-universal.apk` | **全架构通用兜底包** |
 
-            > 以上均由 CI 自动构建，**未签名**（未配置签名密钥），
-            > 无法直接覆盖安装到已安装正式版的设备。
+            均为 CI 自动构建，签名状态：**${{ steps.pkg.outputs.signed }}**。
 
             ## 校验和
 
