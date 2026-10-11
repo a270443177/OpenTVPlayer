@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   release:
-    name: 构建并发布
+    name: 构建并发布（多架构）
     runs-on: ubuntu-latest
 
     steps:
@@ -35,41 +35,97 @@ jobs:
       - name: 赋予 gradlew 可执行权限
         run: chmod +x ./gradlew
 
-      - name: 构建 Release APK
+      - name: 构建 Release APK（按 ABI 拆分 + 通用包）
         run: ./gradlew assembleRelease --stacktrace
 
-      - name: 整理产物
+      - name: 整理产物并算校验和
         id: pkg
         run: |
-          APK=$(ls app/build/outputs/apk/release/*.apk | head -1)
+          set -e
+          SRC=app/build/outputs/apk/release
           VERSION=$(grep -oP 'versionName\s*=\s*"\K[^"]+' app/build.gradle.kts | head -1)
-          OUT="OpenTV-Player-${VERSION}-release-unsigned.apk"
-          cp "$APK" "$OUT"
-          echo "apk=$OUT" >> $GITHUB_OUTPUT
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "版本: $VERSION"
-          echo "产物: $OUT"
-          ls -lh "$OUT"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: 计算校验和
-        id: hash
+          echo "=== 原始产物 ==="
+          ls -lh "$SRC"
+
+          mkdir -p dist
+          for f in "$SRC"/*.apk; do
+            [ -e "$f" ] || continue
+            base=$(basename "$f")
+            case "$base" in
+              *universal*)    tag="universal" ;;
+              *armeabi-v7a*)  tag="armeabi-v7a" ;;
+              *arm64-v8a*)    tag="arm64-v8a" ;;
+              *x86_64*)       tag="x86_64" ;;
+              *x86*)          tag="x86" ;;
+              *)              tag="unknown" ;;
+            esac
+            cp "$f" "dist/OpenTV-Player-${VERSION}-${tag}.apk"
+            echo "  $base  ->  OpenTV-Player-${VERSION}-${tag}.apk"
+          done
+
+          cd dist
+          sha256sum *.apk > SHA256SUMS.txt
+          echo "=== 待发布文件 ==="
+          ls -lh
+          echo ""
+          cat SHA256SUMS.txt
+
+      - name: 输出构建摘要
         run: |
-          SHA=$(sha256sum "${{ steps.pkg.outputs.apk }}" | awk '{print $1}')
-          echo "sha256=$SHA" >> $GITHUB_OUTPUT
-          echo "SHA256: $SHA"
+          {
+            echo "## 构建产物（多架构）"
+            echo ""
+            echo "| 文件 | 大小 |"
+            echo "|---|---|"
+            for f in dist/*.apk; do
+              echo "| $(basename "$f") | $(du -h "$f" | cut -f1) |"
+            done
+            echo ""
+            echo '```'
+            cat dist/SHA256SUMS.txt
+            echo '```'
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: 上传构建产物（Actions artifact）
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenTV-release-apks
+          path: dist/*.apk
+          if-no-files-found: error
+          retention-days: 30
 
       - name: 发布到 GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag || github.ref_name }}
           name: OpenTV Player ${{ steps.pkg.outputs.version }}
-          files: ${{ steps.pkg.outputs.apk }}
+          files: |
+            dist/*.apk
+            dist/SHA256SUMS.txt
           generate_release_notes: true
           body: |
-            > ⚠️ 此包由 CI 自动构建，**未签名**（未配置签名密钥），
-            > 无法直接覆盖安装到已安装正式版的设备。
-            > 正式分发的签名包请见带 `-release.apk` 字样的附件。
+            ## 按设备架构下载
 
-            **SHA-256**：`${{ steps.hash.outputs.sha256 }}`
+            > ℹ️ **当前版本未包含原生库（.so）**，各架构包与通用包内容一致，任选其一即可。
+            > 拆分框架已就位：后续版本引入原生库后，各架构包将自动只含对应架构的库，体积显著减小。
+            > **不确定选哪个就下 `universal`**。
+
+            | 文件名 | 适用设备 |
+            |---|---|
+            | `OpenTV-Player-${{ steps.pkg.outputs.version }}-arm64-v8a.apk` | 主流新设备（2016 年后手机 / 电视盒子） |
+            | `OpenTV-Player-${{ steps.pkg.outputs.version }}-armeabi-v7a.apk` | 较老的 32 位设备 |
+            | `OpenTV-Player-${{ steps.pkg.outputs.version }}-x86_64.apk` | x86 架构平板 / 模拟器 |
+            | `OpenTV-Player-${{ steps.pkg.outputs.version }}-x86.apk` | 老 x86 设备 / 模拟器 |
+            | `OpenTV-Player-${{ steps.pkg.outputs.version }}-universal.apk` | **全架构通用兜底包** |
+
+            > 以上均由 CI 自动构建，**未签名**（未配置签名密钥），
+            > 无法直接覆盖安装到已安装正式版的设备。
+
+            ## 校验和
+
+            详见附件 `SHA256SUMS.txt`。
 
             本应用只提供播放器能力，不附带任何频道源；使用何种内容源由使用者自行决定并自负合规责任。
