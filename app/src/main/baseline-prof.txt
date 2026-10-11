@@ -1,0 +1,30 @@
+# OpenTV 启动关键路径 Baseline Profile
+# 供 R8 在打包时编译为 assets/dexopt/baseline.prof，安装后由 profileinstaller 落盘，
+# 让 ART 在首次启动即 AOT 编译这些热点方法，缩短冷启动时间。
+# 标记：H=Hot  S=Startup  P=Post-startup
+
+# 主界面（冷启动第一时间执行）
+HSPLcom/opentv/player/MainActivity;->onCreate(Landroid/os/Bundle;)V
+HSPLcom/opentv/player/MainActivity;->onStart()V
+HSPLcom/opentv/player/MainActivity;->onResume()V
+HSPLcom/opentv/player/MainActivity;->onPause()V
+HSPLcom/opentv/player/MainActivity;->onStop()V
+HSPLcom/opentv/player/MainActivity;->onDestroy()V
+
+# 播放页
+HSPLcom/opentv/player/PlayerActivity;->onCreate(Landroid/os/Bundle;)V
+HSPLcom/opentv/player/PlayerActivity;->onStop()V
+HSPLcom/opentv/player/PlayerActivity;->onDestroy()V
+
+# 设置页
+HSPLcom/opentv/player/SettingsActivity;->onCreate(Landroid/os/Bundle;)V
+
+# 数据读取（列表加载 / 偏好）
+HSPLcom/opentv/player/data/Library;->channels(Landroid/content/Context;)Ljava/util/List;
+HSPLcom/opentv/player/data/Library;->playlists(Landroid/content/Context;)Ljava/util/List;
+HSPLcom/opentv/player/data/Library;->sorted(Ljava/util/List;I)Ljava/util/List;
+HSPLcom/opentv/player/data/Library;->withNumbers(Ljava/util/List;)Ljava/util/List;
+HSPLcom/opentv/player/data/PlaylistRepository;->loadPlaylists()Ljava/util/List;
+HSPLcom/opentv/player/data/PlaybackPrefs;-><init>(Landroid/content/Context;)V
+HSPLcom/opentv/player/data/M3uParser;->parse(Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
+HSPLcom/opentv/player/data/NameCleaner;->clean(Ljava/lang/String;)Ljava/lang/String;

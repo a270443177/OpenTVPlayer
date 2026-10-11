@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OpenTV</string>
+
+    <!-- 顶部栏 / 导航 -->
+    <string name="nav_groups">分组</string>
+    <string name="search">搜索</string>
+    <string name="tv_guide">电视指南</string>
+    <string name="playlists">播放列表</string>
+    <string name="settings">设置</string>
+    <string name="back">返回</string>
+
+    <!-- 分组 -->
+    <string name="all_channels">全部频道</string>
+    <string name="favorites">★ 收藏</string>
+    <string name="all_groups">全部频道</string>
+    <string name="group_count_fmt">%1$d</string>
+
+    <!-- 频道 -->
+    <string name="no_channels">暂无频道，请先添加播放列表</string>
+    <string name="channel_count_fmt">%1$d 个频道</string>
+    <string name="group_summary_fmt">%1$d 个分组 · %2$d 个频道</string>
+    <string name="now_playing_fmt">正在播出：%1$s</string>
+    <string name="up_next_fmt">接下来：%1$s</string>
+    <string name="no_epg">无节目单</string>
+
+    <!-- 播放列表管理 -->
+    <string name="add_playlist">添加播放列表</string>
+    <string name="edit_playlist">编辑播放列表</string>
+    <string name="edit">编辑</string>
+    <string name="save">保存</string>
+    <string name="playlist_updated_fmt">已保存「%1$s」，%2$d 个频道</string>
+    <string name="playlist_saved_keep_fmt">已保存「%1$s」（沿用原有频道，未重新拉取）</string>
+    <string name="refresh">刷新</string>
+    <string name="manage">管理</string>
+    <string name="manage_title">播放列表管理</string>
+    <string name="delete">删除</string>
+    <string name="delete_confirm_fmt">确定删除「%1$s」？</string>
+    <string name="no_playlist">尚未添加播放列表</string>
+    <string name="multi_playlist_fmt">%1$s（%2$d 频道）</string>
+    <string name="playlist_name">名称</string>
+    <string name="m3u_url">M3U / M3U8 地址</string>
+    <string name="xtream_server">服务器地址（含端口）</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="type_m3u">M3U 链接</string>
+    <string name="type_xtream">Xtream Codes</string>
+    <string name="epg_url">EPG 地址（可选，XMLTV）</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="loading_playlist">正在加载播放列表…</string>
+    <string name="loaded_fmt">已加载 %1$d 个频道</string>
+    <string name="failed_fmt">加载失败：%1$s</string>
+    <string name="refreshed_fmt">已刷新「%1$s」，%2$d 个频道</string>
+    <string name="err_network">网络或格式错误</string>
+    <string name="err_empty_url">地址为空</string>
+    <string name="err_empty_server">服务器/用户名为空</string>
+
+    <!-- 播放 -->
+    <string name="player_error_fmt">播放失败：%1$s</string>
+    <string name="loading_stream">正在连接流媒体…</string>
+    <string name="loading">正在加载…</string>
+    <string name="aspect_ratio">画面比例</string>
+    <string name="audio_tracks">音轨</string>
+    <string name="subtitles">字幕</string>
+    <string name="pip">画中画</string>
+    <string name="select_track">选择</string>
+    <string name="track_off">关闭</string>
+    <string name="track_auto">自动</string>
+    <string name="sleep_timer">睡眠定时</string>
+    <string name="sleep_off">关闭</string>
+    <string name="sleep_set_fmt">%1$d 分钟后停止播放</string>
+    <string name="sleep_ended">睡眠定时结束，已停止播放</string>
+    <string name="sleep_minutes_fmt">%1$d 分钟</string>
+    <string name="exit_hint">再按一次返回退出</string>
+    <string name="channel_list">频道列表</string>
+    <string name="ch_prev">上一个频道</string>
+    <string name="ch_next">下一个频道</string>
+    <string name="catchup_play">回看</string>
+    <string name="catchup_loading">正在打开回看…</string>
+    <string name="catchup_expired">该节目已超出可回看时长</string>
+    <string name="catchup_unsupported">该频道不支持回看</string>
+    <string name="catchup_badge">回看</string>
+    <string name="no_next_channel">已经是最后一个频道</string>
+    <string name="no_prev_channel">已经是第一个频道</string>
+
+    <!-- 频道选项 -->
+    <string name="ch_options_title">频道选项</string>
+    <string name="fav_add">加入收藏</string>
+    <string name="fav_remove">取消收藏</string>
+    <string name="favorite_added">已加入收藏</string>
+    <string name="favorite_removed">已取消收藏</string>
+    <string name="ch_info">频道信息</string>
+    <string name="copy_url">复制地址</string>
+    <string name="copied">已复制到剪贴板</string>
+    <string name="play_now">播放</string>
+    <string name="info_title">频道信息</string>
+    <string name="info_name">名称</string>
+    <string name="info_number">频道号</string>
+    <string name="info_group">分组</string>
+    <string name="info_playlist">播放列表</string>
+    <string name="info_url">流地址</string>
+    <string name="info_epg">EPG 节目</string>
+    <string name="info_catchup">回看</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+
+    <!-- 电视指南 -->
+    <string name="guide_no_epg">未配置 EPG 源。添加播放列表时填入 EPG 地址后即可显示节目单。</string>
+    <string name="loading_epg">正在加载 EPG…</string>
+    <string name="epg_loaded_fmt">EPG 已加载 %1$d 个频道</string>
+    <string name="epg_failed_fmt">EPG 加载失败：%1$s</string>
+    <string name="today">今天</string>
+    <string name="tomorrow">明天</string>
+    <string name="reminder_action">提醒</string>
+    <string name="reminder_set_fmt">已设置提醒：%1$s · %2$s</string>
+    <string name="reminder_cancel">取消提醒</string>
+    <string name="reminder_cancelled">已取消提醒</string>
+    <string name="reminder_title">节目提醒</string>
+    <string name="reminder_body_fmt">「%1$s」即将在 %2$s 开始</string>
+
+    <!-- 搜索 -->
+    <string name="search_hint">搜索频道或节目</string>
+    <string name="search_no_result">没有匹配结果</string>
+    <string name="search_result_fmt">%1$d 个结果</string>
+    <string name="search_channels">频道</string>
+    <string name="search_programs">节目</string>
+
+    <!-- 设置 -->
+    <string name="set_playback">播放</string>
+    <string name="set_interface">界面</string>
+    <string name="set_general">通用</string>
+    <string name="set_parental">家长控制</string>
+    <string name="set_data">数据</string>
+    <string name="set_about">关于</string>
+    <string name="set_user_agent">User-Agent</string>
+    <string name="set_user_agent_sum">自定义 HTTP 请求头，部分源需要特定 UA</string>
+    <string name="set_decoder">解码器优先级</string>
+    <string name="set_buffer">播放缓冲</string>
+    <string name="set_buffer_value_fmt">%1$d 秒</string>
+    <string name="set_show_clock">播放器显示时钟</string>
+    <string name="set_clock_24h">24 小时制</string>
+    <string name="set_auto_pip">按 Home 进入画中画</string>
+    <string name="set_double_back">双击返回退出播放器</string>
+    <string name="set_resume">启动时继续播放上次频道</string>
+    <string name="set_group_sort">分组按频道数排序</string>
+    <string name="set_auto_refresh">定时刷新</string>
+    <string name="set_auto_refresh_sum">启动时以及每隔一段时间自动重新拉取播放列表与 EPG</string>
+    <string name="set_auto_refresh_interval">刷新间隔</string>
+    <string name="set_hours_fmt">%1$d 小时</string>
+    <string name="set_refresh_now">立即刷新播放列表与 EPG</string>
+    <string name="refresh_pending">已标记为待刷新，返回后自动执行</string>
+    <string name="auto_refreshing">正在自动刷新…</string>
+    <string name="auto_refreshed_fmt">已自动刷新：%1$d 个频道</string>
+    <string name="auto_refresh_failed">自动刷新失败，继续使用本地数据</string>
+    <string name="last_refresh_fmt">上次刷新：%1$s</string>
+    <string name="never_refreshed">尚未刷新</string>
+    <string name="set_hidden_groups">隐藏分组</string>
+    <string name="set_hidden_groups_fmt">已隐藏 %1$d 个分组</string>
+    <string name="set_parental_enabled">启用家长控制</string>
+    <string name="set_set_pin">设置 PIN 码</string>
+    <string name="set_lock_settings">锁定设置</string>
+    <string name="set_lock_adult">锁定成人分组</string>
+    <string name="set_lock_playlists">锁定播放列表管理</string>
+    <string name="pin_title">输入 PIN</string>
+    <string name="pin_set_title">设置 4 位 PIN</string>
+    <string name="pin_current_title">输入当前 PIN</string>
+    <string name="pin_wrong">PIN 错误</string>
+    <string name="pin_need_4">请输入 4 位数字</string>
+    <string name="pin_set_ok">PIN 已设置</string>
+    <string name="pin_mismatch">两次输入不一致</string>
+    <string name="pin_confirm_title">再次输入确认</string>
+    <string name="set_backup">备份数据</string>
+    <string name="set_restore">恢复数据</string>
+    <string name="backup_done_fmt">已备份到：%1$s</string>
+    <string name="backup_failed">备份失败</string>
+    <string name="no_backup">没有可用的备份文件</string>
+    <string name="restore_confirm_fmt">用「%1$s」覆盖当前播放列表与设置？</string>
+    <string name="restore_done">已恢复</string>
+    <string name="restore_failed">恢复失败</string>
+    <string name="set_clear_data">清空全部数据</string>
+    <string name="clear_confirm">确定清空播放列表、收藏与设置？此操作不可撤销。</string>
+    <string name="cleared">已清空</string>
+    <string name="about_text">OpenTV 1.5.1\n原创开源 IPTV 播放器（M3U / Xtream / 本地文件 + EPG + 回看 + 组播）\n播放内核：AndroidX Media3 / ExoPlayer\n支持电视遥控器与手机 / 平板\n本应用为独立实现，与任何第三方商业软件无关。</string>
+
+    <!-- 分组选择（隐藏分组） -->
+    <string name="hidden_groups_title">选择要隐藏的分组</string>
+
+    <!-- 本地导入 -->
+    <string name="pick_local_file">选择本地文件</string>
+    <string name="import_ok_fmt">已导入「%1$s」，%2$d 个频道</string>
+    <string name="import_failed">本地文件导入失败</string>
+
+    <!-- 开机自启 -->
+    <string name="set_boot_start">开机自启</string>
+    <string name="set_boot_start_sum">设备开机后自动打开本应用</string>
+    <string name="set_boot_permission">后台启动权限</string>
+    <string name="set_boot_permission_sum">电视系统要求授予「显示在其他应用上层」才允许开机自动打开</string>
+    <string name="boot_granted">已授权</string>
+    <string name="boot_not_granted">未授权，点此授予</string>
+    <string name="boot_grant">去授权</string>
+    <string name="boot_no_settings">该电视没有开放的授权页面，请在系统设置中手动允许自启动</string>
+    <string name="boot_need_permission">电视系统默认禁止应用在开机时自动打开界面。\n\n请在接下来的系统页面中打开「允许显示在其他应用上层 / 悬浮窗」开关；另外部分电视还需要在「自启动管理」白名单里放行本应用。</string>
+
+    <!-- 遥控按键说明 -->
+    <string name="set_keys_help">遥控器按键说明</string>
+    <string name="keys_help_body">【播放画面】\n上 / 下：切换频道（到最后一个频道再往下会回到第一个）\n左：打开频道列表\n右 / 确定：呼出控制面板\n频道 +/-、翻页键：切换频道\n数字键：输入频道号直接跳转（如按 1、2 到 12 台，稍候自动跳转；确定可立即跳转，返回 / 删除键撤销）\n菜单 / 信息键：呼出控制面板\n返回：收起面板，再按退出播放\n\n【控制面板】\n左右：在按钮间移动\n确定：执行\n停止操作 5 秒后自动收起\n\n【频道列表】\n上下：选择频道\n确定：切换到该频道\n左 / 返回：收起列表\n\n【主界面】\n上下：浏览频道\n确定：播放\n长按确定：频道选项（收藏 / 信息 / 复制地址）\n左右：在分组与频道间切换\n\n【画中画小窗】\n确定 或 返回：回到全屏</string>
+
+    <!-- 数字键直选频道 -->
+    <string name="number_input_hint">输入频道号…</string>
+    <string name="channel_not_found_fmt">没有第 %1$d 号频道</string>
+
+    <!-- 遥控换台方向 -->
+    <string name="set_zap_up">上键换台方向</string>
+    <string name="zap_up_next">上键 = 下一个频道</string>
+    <string name="zap_up_prev">上键 = 上一个频道</string>
+    <string name="set_auto_pip_sum">按 Home 进入小窗播放（电视上需用遥控确认才能返回全屏）</string>
+
+    <!-- EPG 源 / 偏移 -->
+    <string name="set_epg_sources">EPG 源管理</string>
+    <string name="set_epg_sources_fmt">%1$d 个 EPG 源</string>
+    <string name="epg_add">添加 EPG 源</string>
+    <string name="epg_source_name">名称</string>
+    <string name="epg_source_url">XMLTV 地址（支持 .gz）</string>
+    <string name="epg_no_source">暂无附加 EPG 源（播放列表自带的仍会加载）</string>
+    <string name="set_epg_offset">EPG 时间偏移</string>
+    <string name="epg_offset_fmt">%1$s 分钟</string>
+
+    <!-- UDP / 组播 -->
+    <string name="set_udpxy">UDPXY 代理</string>
+    <string name="set_udpxy_sum">组播源经此代理转发；留空则使用内置组播接收</string>
+    <string name="set_udpxy_hint">例如 http://192.168.1.1:8686</string>
+
+    <!-- 外部播放器 -->
+    <string name="open_external">外部播放器</string>
+    <string name="external_none">未找到可用的外部播放器应用</string>
+
+    <!-- 播放器时钟 -->
+    <string name="set_clock_pos">时钟位置</string>
+    <string name="set_clock_size">时钟大小</string>
+    <string name="clock_pos_names">右上|左上|右下|左下</string>
+    <string name="clock_size_names">正常|大</string>
+
+    <!-- 频道排序 -->
+    <string name="set_channel_sort">频道排序</string>
+    <string name="channel_sort_names">列表顺序|按频道号|按名称</string>
+    <string name="set_loop_channels">频道循环切换</string>
+    <string name="set_loop_channels_sum">最后一个频道往下回到第一个，第一个往上回到最后一个</string>
+
+    <!-- V1.5 P0：播放管线增强 -->
+    <string name="playback_speed">播放速度</string>
+    <string name="speed_normal">1.0x（正常）</string>
+    <string name="speed_value_fmt">%1$sx</string>
+    <string name="speed_toast_fmt">播放速度 %1$sx</string>
+    <string name="set_playback_speed">播放速度</string>
+    <string name="set_playback_speed_sum">直播 / 回看均可变速（0.5x ~ 2.0x）</string>
+    <string name="set_audio_passthrough">音频直通</string>
+    <string name="set_audio_passthrough_sum">压缩音频交给电视 / 功放解码；老盒子「有画面没声音」可试开</string>
+    <string name="set_afr">自动帧率（AFR）</string>
+    <string name="set_afr_sum">按视频帧率切换屏幕刷新率，减少画面抖动（仅 HDMI 电视有效）</string>
+    <string name="set_clean_names">清理频道名</string>
+    <string name="set_clean_names_sum">去掉画质 / 序号等前后缀，如「CCTV-1 高清」→「CCTV-1」</string>
+
+    <!-- 搜索设置 -->
+    <string name="set_search">搜索</string>
+    <string name="set_search_fav_first">收藏频道优先</string>
+    <string name="set_search_in_desc">搜索节目描述</string>
+</resources>

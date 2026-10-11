@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="rail_width">184dp</dimen>
+    <dimen name="rail_width_narrow">148dp</dimen>
+    <dimen name="row_height">64dp</dimen>
+    <dimen name="guide_left_width">168dp</dimen>
+    <dimen name="guide_hour_width">300dp</dimen>
+    <dimen name="logo_size">44dp</dimen>
+    <dimen name="gap">8dp</dimen>
+    <dimen name="pad">14dp</dimen>
+</resources>
