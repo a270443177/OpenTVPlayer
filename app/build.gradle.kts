@@ -26,6 +26,22 @@ android {
         versionCode = 8
         versionName = "1.5.1"
         vectorDrawables { useSupportLibrary = true }
+
+        ndk {
+            // 声明支持的 CPU 架构；拆分后每个包只含对应架构
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        }
+    }
+
+    // ---- 按 CPU 架构拆分 APK ----
+    // 每个架构产出独立包，另加一个含全部架构的 universal 包。
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+            isUniversalApk = true
+        }
     }
 
     signingConfigs {
