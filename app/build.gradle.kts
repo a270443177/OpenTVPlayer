@@ -23,8 +23,8 @@ android {
         applicationId = "com.opentv.player"
         minSdk = 21
         targetSdk = 34
-        versionCode = 8
-        versionName = "1.5.1"
+        versionCode = 9
+        versionName = "1.5.2"
         vectorDrawables { useSupportLibrary = true }
 
         ndk {
