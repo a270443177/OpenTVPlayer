@@ -604,7 +604,7 @@ class PlayerActivity : AppCompatActivity() {
     private fun scheduleAutoHide() {
         cancelAutoHide()
         val r = Runnable {
-            if (overlay.visibility == View.VISIBLE && !isInPictureInPictureMode) hideOverlay()
+            if (overlay.visibility == View.VISIBLE && !isInPip) hideOverlay()
         }
         hideRunnable = r
         handler.postDelayed(r, OVERLAY_HIDE_DELAY)
@@ -974,6 +974,17 @@ class PlayerActivity : AppCompatActivity() {
 
     // ---------------- 画中画 ----------------
 
+    /**
+     * 当前是否处于画中画模式。
+     *
+     * [Activity.isInPictureInPictureMode] 是 API 24 (Android 7.0) 才引入的方法，
+     * 直接在低版本（如小米电视 MiTV4 / Android 6.0.1 / API 23）上调用会抛
+     * `NoSuchMethodError` 并导致进程崩溃闪退。此处做统一的安全包装，
+     * 在 API < 24 的设备上恒返回 false（这些设备本身也不支持画中画）。
+     */
+    private val isInPip: Boolean
+        get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode
+
     private fun enterPip() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             Ui.toast(this, getString(R.string.pip))
@@ -987,14 +998,14 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
-        if (prefs.autoPip && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !isInPictureInPictureMode) {
+        if (prefs.autoPip && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !isInPip) {
             enterPip()
         }
     }
 
-    override fun onPictureInPictureModeChanged(isInPip: Boolean, newConfig: Configuration) {
-        super.onPictureInPictureModeChanged(isInPip, newConfig)
-        if (isInPip) {
+    override fun onPictureInPictureModeChanged(inPip: Boolean, newConfig: Configuration) {
+        super.onPictureInPictureModeChanged(inPip, newConfig)
+        if (inPip) {
             cancelAutoHide()
             cancelNumberInput()
             overlay.visibility = View.GONE
@@ -1023,7 +1034,7 @@ class PlayerActivity : AppCompatActivity() {
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         // 数字输入进行中：确定键只用于"立即跳转"，不能透传给底层视图
         // （PlayerView / 按钮会消费确定键触发点击，导致误开控制面板）
-        if (!isInPictureInPictureMode && numberBuffer.isNotEmpty() &&
+        if (!isInPip && numberBuffer.isNotEmpty() &&
             (event.keyCode == KeyEvent.KEYCODE_DPAD_CENTER || event.keyCode == KeyEvent.KEYCODE_ENTER)
         ) {
             if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) commitNumberInput()
@@ -1034,7 +1045,7 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         // 画中画：确认 / 返回都用来回到全屏
-        if (isInPictureInPictureMode) {
+        if (isInPip) {
             return when (keyCode) {
                 KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER,
                 KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_ESCAPE -> {
@@ -1162,7 +1173,7 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (!isInPictureInPictureMode) player?.pause()
+        if (!isInPip) player?.pause()
         // 退出播放时把屏幕刷新率还给系统，避免影响桌面与其他应用
         restoreDisplayMode()
     }
