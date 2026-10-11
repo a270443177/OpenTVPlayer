@@ -21,10 +21,12 @@ android {
 
     defaultConfig {
         applicationId = "com.opentv.player"
-        minSdk = 21
+        minSdk = 19
         targetSdk = 34
-        versionCode = 9
-        versionName = "1.5.2"
+        versionCode = 10
+        versionName = "1.5.3"
+        // Android 4.4（API 19）及以下不支持原生多 dex，方法数 >65536 时必须开启 multidex
+        multiDexEnabled = true
         vectorDrawables { useSupportLibrary = true }
 
         ndk {
@@ -99,9 +101,11 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+    // API 19 支持：4.4 及以下需 multidex 才能加载超过 65536 个方法
+    implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
