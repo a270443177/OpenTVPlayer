@@ -5,9 +5,20 @@
 > 本项目为从零编写的独立实现，使用公开协议（M3U / Xtream Codes API / XMLTV / HLS）与开源库（AndroidX、Media3/ExoPlayer）。
 > 不包含任何第三方商业应用的代码或资源。
 
+[![Build](https://github.com/a270443177/OpenTVPlayer/actions/workflows/build.yml/badge.svg)](https://github.com/a270443177/OpenTVPlayer/actions/workflows/build.yml)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Android%205.0%2B-green.svg)](#环境要求)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9.24-orange.svg)](#技术栈)
+
+---
+
+## 下载
+
+| 版本 | 说明 |
+|---|---|
+| [**最新正式包（Releases）**](https://github.com/a270443177/OpenTVPlayer/releases/latest) | 正式签名 APK，可直接安装到电视 / 手机 |
+
+> CI 每次提交都会自动构建 APK，可在 [Actions](https://github.com/a270443177/OpenTVPlayer/actions) 页面下载构建产物（未签名）。
 
 ---
 
